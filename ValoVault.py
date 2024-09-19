@@ -12,32 +12,6 @@ import subprocess
 import os
 import database as db
 
-'''
-class Arma:
-
-    def __init__(self, nome):
-        self.nome = nome
-
-        self.skins = []
-
-    def add_skin(self, skin: str):
-
-        #Se a arma não tiver skins associadas, adiciona-a
-        if len(self.skins) == 0:
-            self.skins.append(skin)
-            return 1
-
-        #Verifica se a skin já existir na lista
-        for s in self.skins:
-            if s == skin:
-                return 0
-        
-        #Se a skin não existe na lista, adiciona-a
-        self.skins.append(skin)
-        return 1
-'''
-
-
 
 def main():
 
@@ -127,6 +101,14 @@ def menu_colecao(cnx, cursor):
             clear_screen()
             menu_inicial(cnx, cursor)
 
+        case _:
+            clear_screen()
+            print("Opção Inválida")
+            pause()
+
+            clear_screen()
+            menu_colecao(cnx, cursor)
+
 #------------------------------- COLEÇÃO ----------------------------------#
 
 def show_col(cursor):
@@ -136,17 +118,24 @@ def show_col(cursor):
     if len(result) == 0:
         print("A coleção está vazia. Adicione skins selecionando 2 no menu Coleção")
     else:
+        print('*' * 52)
+        print('*' + (' ' * 50) + '*')
+        print(f"{'*'}{'Coleção':>10}{'*':>41}")
+        print('*' + (' ' * 50) + '*')
         armas = []
         for r in result:
-            arma = r[1].decode()
-            skin = r[2].decode()
+            arma = r[1]
+            skin = r[2]
 
             if len(armas) == 0 or not (arma in armas):
                 armas.append(arma)
-                print(f"{arma}:")
-                print(f"     - {skin}")
+                print(f"{'*':<6}{arma.upper()}" + (' ' * (45 - len(arma))) + '*')
+                print(f"{'*':<8} - {skin}" + (' ' * (40 - len(skin))) + '*')
             else:
-                print(f"     - {skin}")
+                print(f"{'*':<8} - {skin}" + (' ' * (40 - len(skin))) + '*')
+
+        print('*' + (' ' * 50) + '*')
+        print('*' * 52)
 
 
 def add_colecao(cnx, cursor):
@@ -175,18 +164,38 @@ def rem_colecao(cnx, cursor):
         print("A coleção está vazia. Adicione skins selecionando 2 no menu Coleção")
         return
     
-    print("Selecione a skin: ")
-    
-    for r in result:
-        id   = r[0]
-        arma = r[1].decode()
-        skin = r[2].decode()
+    #Ordenar a lista por ordem crescente de ids
+    #result = sorted(result)
+    print('*' * 52)
+    print('*' + (' ' * 50) + '*')
+    print(f"{'*'}{'Selecione a skin:':>20}{'*':>31}")
+    print('*' + (' ' * 50) + '*')
 
-        print(f"{id}: {arma} - {skin}")
-    
+    armas = []
+    for r in result:
+
+        id   = r[0]
+        arma = r[1]
+        skin = r[2]
+
+        if len(armas) == 0 or not (arma in armas):
+            armas.append(arma)
+            print(f"{'*':<6}{arma.upper()}" + (' ' * (45 - len(arma))) + '*')
+            print(f"{'*':<8} - {id}: {skin}" + (' ' * (37 - len(skin))) + '*')
+        else:
+            print(f"{'*':<8} - {id}: {skin}" + (' ' * (37 - len(skin))) + '*')
+
+    print('*' + (' ' * 50) + '*')
+    print('*' * 52)
+    print()
+
     op = input("OPCAO > ").upper()
 
-    db.del_col(cnx, cursor, op)
+    if op == 'B':
+        clear_screen()
+        menu_colecao(cnx, cursor)
+    else:
+        db.del_col(cnx, cursor, op)
 
 #--------------------------------- WISHLIST -----------------------------------#
 
@@ -240,6 +249,14 @@ def menu_wishlist(cnx, cursor):
             clear_screen()
             menu_inicial(cnx, cursor)
 
+        case _:
+            clear_screen()
+            print("Opção Inválida")
+            pause()
+
+            clear_screen()
+            menu_wishlist(cnx, cursor)
+
 
 def show_wish(cursor):
 
@@ -249,17 +266,24 @@ def show_wish(cursor):
         print("A wishlist está vazia. Adicione skins selecionando 2 no menu Wishlist")
 
     else:
+        print('*' * 52)
+        print('*' + (' ' * 50) + '*')
+        print(f"{'*'}{'Wishlist':>10}{'*':>41}")
+        print('*' + (' ' * 50) + '*')
         armas = []
-        for x in result:
-            arma = x[1].decode()
-            skin = x[2].decode()
+        for r in result:
+            arma = r[1]
+            skin = r[2]
 
             if len(armas) == 0 or not (arma in armas):
                 armas.append(arma)
-                print(f"{arma}:")
-                print(f"     - {skin}")
+                print(f"{'*':<6}{arma.upper()}" + (' ' * (45 - len(arma))) + '*')
+                print(f"{'*':<8} - {skin}" + (' ' * (40 - len(skin))) + '*')
             else:
-                print(f"     - {skin}")
+                print(f"{'*':<8} - {skin}" + (' ' * (40 - len(skin))) + '*')
+
+        print('*' + (' ' * 50) + '*')
+        print('*' * 52)
 
 
 
@@ -277,7 +301,8 @@ def add_wishlist(cnx, cursor):
     if arma == 'B':
         menu_wishlist(cnx, cursor)
 
-    db.adicionar_wishlist(cnx, cursor, arma, skin)
+    else:
+        db.adicionar_wishlist(cnx, cursor, arma, skin)
 
 
 def rem_wishlist(cnx, cursor):
@@ -287,43 +312,43 @@ def rem_wishlist(cnx, cursor):
     if len(result) == 0:
         print("A coleção está vazia. Adicione skins selecionando 2 no menu Coleção")
         return
-    
-    print("Selecione a skin: ")
 
-    ids = []
+    #Ordenar a lista por ordem crescente de ids
+    #result = sorted(result)
 
+    print('*' * 52)
+    print('*' + (' ' * 50) + '*')
+    print(f"{'*'}{'Selecione a skin:':>20}{'*':>31}")
+    print('*' + (' ' * 50) + '*')
+
+    armas = []
     for r in result:
-        id = r[0]
-        
-        if len(ids) == 0:
-            ids.append(id)
-            continue
 
-        if len(ids) == 1:
-            if(ids[0] < id):
-                ids.append(id)
-            else:
-                maior = ids[0]
-                ids[0] = id
-                ids.append(maior)
-        
-        for i in range(len(ids) - 1):
-            if(ids[])
-
-        print(ids)
-    
-    '''
-    for r in result:
         id   = r[0]
-        arma = r[1].decode()
-        skin = r[2].decode()
+        arma = r[1]
+        skin = r[2]
 
-        print(f"{id}: {arma} - {skin}")
+        if len(armas) == 0 or not (arma in armas):
+            armas.append(arma)
+            print(f"{'*':<6}{arma.upper()}" + (' ' * (45 - len(arma))) + '*')
+            print(f"{'*':<8} - {id}: {skin}" + (' ' * (37 - len(skin))) + '*')
+        else:
+            print(f"{'*':<8} - {id}: {skin}" + (' ' * (37 - len(skin))) + '*')
+
+    print('*' + (' ' * 50) + '*')
+    print('*' * 52)
+    print()
     
     op = input("OPCAO > ").upper()
 
-    db.del_wish(cnx, cursor, op)
-    '''
+    if op == 'B':
+        clear_screen()
+        menu_wishlist(cnx, cursor)
+        
+    else:
+        db.del_wish(cnx, cursor, op)
+    
+    
 
 # ----------------------------------------------------------------------------- #
 
@@ -366,7 +391,7 @@ def sel_arma(cursor, skin):
     print('*' + (' ' * 50) + '*')
 
     for arma in armas:
-        print(f"{'*'}{arma[0]:>5} - {arma[1].decode()}{' ':>50} *") #Arma - Skin
+        print(f"{'*'}{arma[0]:>5} - {arma[1]}" + (' ' * (42 - len(arma[1]))) + '*') #Arma - Skin
 
     print(f"{'*'}{'B':>5}{' - Voltar'}{'*':>37}")
     print('*' + (' ' * 50) + '*')
