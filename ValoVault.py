@@ -20,6 +20,7 @@ def main():
     clear_screen()
     menu_inicial(cnx, cursor)
 
+#------------------------------- MENU INICIAL ----------------------------------#
 
 def menu_inicial(cnx, cursor):
 
@@ -50,6 +51,15 @@ def menu_inicial(cnx, cursor):
             db.fechar(cnx, cursor)
             sys.exit(2)
 
+        case _:
+            clear_screen()
+            print("Opção Inválida")
+            pause()
+
+            clear_screen()
+            menu_inicial(cnx, cursor)
+
+#------------------------------- MENU COLEÇÃO ----------------------------------#
 
 def menu_colecao(cnx, cursor):
     print('*' * 52)
@@ -109,7 +119,7 @@ def menu_colecao(cnx, cursor):
             clear_screen()
             menu_colecao(cnx, cursor)
 
-#------------------------------- COLEÇÃO ----------------------------------#
+#------------------------------- SHOW COLEÇÃO ----------------------------------#
 
 def show_col(cursor):
 
@@ -137,6 +147,7 @@ def show_col(cursor):
         print('*' + (' ' * 50) + '*')
         print('*' * 52)
 
+#--------------------------------- ADD COLEÇÃO ----------------------------------#
 
 def add_colecao(cnx, cursor):
 
@@ -152,8 +163,30 @@ def add_colecao(cnx, cursor):
     if arma == 'B':
         menu_colecao(cnx, cursor)
 
-    db.adicionar_colecao(cnx, cursor, arma, skin)
+    existe = existe_col(cursor, arma, skin)
 
+    if existe:
+        print("Arma já existe na coleção")
+        pause()
+
+        clear_screen()
+        menu_colecao(cnx, cursor)
+
+    else:
+        db.adicionar_colecao(cnx, cursor, arma, skin)
+
+#-------------------------------- EXISTE COLEÇÃO --------------------------------#
+
+def existe_col(cursor, arma, skin):
+
+    result = db.get_col(cursor, arma, skin)
+
+    if len(result) == 1:
+        return 1
+
+    return 0
+
+#--------------------------------- REM COLEÇÃO ----------------------------------#
 
 def rem_colecao(cnx, cursor):
 
@@ -172,11 +205,14 @@ def rem_colecao(cnx, cursor):
     print('*' + (' ' * 50) + '*')
 
     armas = []
+    ids = []
     for r in result:
 
         id   = r[0]
         arma = r[1]
         skin = r[2]
+
+        ids.append(id)
 
         if len(armas) == 0 or not (arma in armas):
             armas.append(arma)
@@ -194,10 +230,17 @@ def rem_colecao(cnx, cursor):
     if op == 'B':
         clear_screen()
         menu_colecao(cnx, cursor)
-    else:
+    elif op in ids:
         db.del_col(cnx, cursor, op)
+    else:
+        clear_screen()
+        print("Opção Inválida")
+        pause()
 
-#--------------------------------- WISHLIST -----------------------------------#
+        clear_screen()
+        menu_colecao(cnx, cursor)
+
+#--------------------------------- MENU WISHLIST -----------------------------------#
 
 def menu_wishlist(cnx, cursor):
     print('*' * 52)
@@ -257,6 +300,7 @@ def menu_wishlist(cnx, cursor):
             clear_screen()
             menu_wishlist(cnx, cursor)
 
+#--------------------------------- SHOW WISHLIST -----------------------------------#
 
 def show_wish(cursor):
 
@@ -281,11 +325,11 @@ def show_wish(cursor):
                 print(f"{'*':<8} - {skin}" + (' ' * (40 - len(skin))) + '*')
             else:
                 print(f"{'*':<8} - {skin}" + (' ' * (40 - len(skin))) + '*')
-
+        
         print('*' + (' ' * 50) + '*')
         print('*' * 52)
 
-
+#----------------------------------- ADD WISHLIST -----------------------------------#
 
 def add_wishlist(cnx, cursor):
 
@@ -298,12 +342,34 @@ def add_wishlist(cnx, cursor):
     arma = sel_arma(cursor, skin)
     clear_screen()
 
+
     if arma == 'B':
         menu_wishlist(cnx, cursor)
-
     else:
-        db.adicionar_wishlist(cnx, cursor, arma, skin)
+        existe = existe_wish(cursor, arma, skin)
 
+        if existe:
+            print("Arma já existe na coleção")
+            pause()
+
+            clear_screen()
+            menu_wishlist(cnx, cursor)
+
+        else:
+            db.adicionar_wishlist(cnx, cursor, arma, skin)
+
+#--------------------------------- EXISTE WISHLIST ---------------------------------#
+
+def existe_wish(cursor, arma, skin):
+
+    result = db.get_wish(cursor, arma, skin)
+
+    if len(result) == 1:
+        return 1
+
+    return 0
+
+#----------------------------------- REM WISHLIST -----------------------------------#
 
 def rem_wishlist(cnx, cursor):
 
@@ -322,11 +388,14 @@ def rem_wishlist(cnx, cursor):
     print('*' + (' ' * 50) + '*')
 
     armas = []
+    ids = []
     for r in result:
 
         id   = r[0]
         arma = r[1]
         skin = r[2]
+
+        ids.append(id)
 
         if len(armas) == 0 or not (arma in armas):
             armas.append(arma)
@@ -335,6 +404,7 @@ def rem_wishlist(cnx, cursor):
         else:
             print(f"{'*':<8} - {id}: {skin}" + (' ' * (37 - len(skin))) + '*')
 
+    print(f"{'*'}{'B':>5}{' - Voltar'}{'*':>37}")
     print('*' + (' ' * 50) + '*')
     print('*' * 52)
     print()
@@ -344,12 +414,16 @@ def rem_wishlist(cnx, cursor):
     if op == 'B':
         clear_screen()
         menu_wishlist(cnx, cursor)
-        
-    else:
+    elif op in ids:
         db.del_wish(cnx, cursor, op)
-    
-    
+    else:
+        clear_screen()
+        print("Opção Inválida")
+        pause()
 
+        clear_screen()
+        menu_wishlist(cnx, cursor)
+    
 # ----------------------------------------------------------------------------- #
 
 def sel_skin():
@@ -374,8 +448,22 @@ def sel_skin():
     if op == 'B':
         return op
 
+    elif op.isnumeric():
+        op = int(op)
+        if op >= 1 and op < 6:
+            skin = op
+        else:
+            clear_screen()
+            print("Opção Inválida")
+            pause()
+
+            return 'B'
     else:
-        skin = int(op)
+        clear_screen()
+        print("Opção Inválida")
+        pause()
+            
+        return 'B'
 
     return skin
 
@@ -390,7 +478,9 @@ def sel_arma(cursor, skin):
     print(f"{'*'}{'Selecione a arma':>19}{'*':>32}")
     print('*' + (' ' * 50) + '*')
 
+    ids = []
     for arma in armas:
+        ids.append(arma[0])
         print(f"{'*'}{arma[0]:>5} - {arma[1]}" + (' ' * (42 - len(arma[1]))) + '*') #Arma - Skin
 
     print(f"{'*'}{'B':>5}{' - Voltar'}{'*':>37}")
@@ -404,8 +494,22 @@ def sel_arma(cursor, skin):
     if op == 'B':
         return op
 
+    elif op.isnumeric():
+        op = int(op)
+        if op in ids:
+            arma = op
+        else:
+            clear_screen()
+            print("Opção Inválida")
+            pause()
+
+            return 'B'
     else:
-        arma = int(op)
+        clear_screen()
+        print("Opção Inválida")
+        pause()
+            
+        return 'B'
 
     return arma
     
