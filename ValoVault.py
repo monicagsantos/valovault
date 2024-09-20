@@ -173,6 +173,9 @@ def add_colecao(cnx, cursor):
         menu_colecao(cnx, cursor)
 
     else:
+        w, id = existe_wish(cursor, arma, skin)
+        if w:
+            db.del_wish(cnx, cursor, id)
         db.adicionar_colecao(cnx, cursor, arma, skin)
 
 #-------------------------------- EXISTE COLEÇÃO --------------------------------#
@@ -230,8 +233,17 @@ def rem_colecao(cnx, cursor):
     if op == 'B':
         clear_screen()
         menu_colecao(cnx, cursor)
-    elif op in ids:
-        db.del_col(cnx, cursor, op)
+    elif (op.isnumeric()):
+        op = int(op)
+        if op in ids:
+            db.del_col(cnx, cursor, op)
+        else:
+            clear_screen()
+            print("Opção Inválida")
+            pause()
+
+            clear_screen()
+            menu_colecao(cnx, cursor)
     else:
         clear_screen()
         print("Opção Inválida")
@@ -346,10 +358,10 @@ def add_wishlist(cnx, cursor):
     if arma == 'B':
         menu_wishlist(cnx, cursor)
     else:
-        existe = existe_wish(cursor, arma, skin)
+        existe, id = existe_wish(cursor, arma, skin)
 
         if existe:
-            print("Arma já existe na coleção")
+            print("Arma já existe na wishlist")
             pause()
 
             clear_screen()
@@ -363,11 +375,12 @@ def add_wishlist(cnx, cursor):
 def existe_wish(cursor, arma, skin):
 
     result = db.get_wish(cursor, arma, skin)
+    print(result)
 
     if len(result) == 1:
-        return 1
+        return 1, result[0][0]
 
-    return 0
+    return 0, 0
 
 #----------------------------------- REM WISHLIST -----------------------------------#
 
