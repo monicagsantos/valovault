@@ -166,7 +166,7 @@ def add_colecao(cnx, cursor):
     existe = existe_col(cursor, arma, skin)
 
     if existe:
-        print("Arma já existe na coleção")
+        print("Skin já existe na coleção")
         pause()
 
         clear_screen()
@@ -219,11 +219,12 @@ def rem_colecao(cnx, cursor):
 
         if len(armas) == 0 or not (arma in armas):
             armas.append(arma)
-            print(f"{'*':<6}{arma.upper()}" + (' ' * (45 - len(arma))) + '*')
-            print(f"{'*':<8} - {id}: {skin}" + (' ' * (37 - len(skin))) + '*')
+            print(f"{'*':<5}{arma.upper()}" + (' ' * (46 - len(arma))) + '*')
+            print(f"{'*':<7} - {id}: {skin}" + (' ' * (39 - len(str(id)) - len(skin))) + '*')
         else:
-            print(f"{'*':<8} - {id}: {skin}" + (' ' * (37 - len(skin))) + '*')
+            print(f"{'*':<7} - {id}: {skin}" + (' ' * (39 - len(str(id)) - len(skin))) + '*')
 
+    print(f"{'*'}{'B':>5}{' - Voltar'}{'*':>37}")
     print('*' + (' ' * 50) + '*')
     print('*' * 52)
     print()
@@ -361,7 +362,7 @@ def add_wishlist(cnx, cursor):
         existe, id = existe_wish(cursor, arma, skin)
 
         if existe:
-            print("Arma já existe na wishlist")
+            print("Skin já existe na wishlist")
             pause()
 
             clear_screen()
@@ -427,8 +428,17 @@ def rem_wishlist(cnx, cursor):
     if op == 'B':
         clear_screen()
         menu_wishlist(cnx, cursor)
-    elif op in ids:
-        db.del_wish(cnx, cursor, op)
+    elif (op.isnumeric()):
+        op = int(op)
+        if op in ids:
+            db.del_wish(cnx, cursor, op)
+        else:
+            clear_screen()
+            print("Opção Inválida")
+            pause()
+
+            clear_screen()
+            menu_colecao(cnx, cursor)
     else:
         clear_screen()
         print("Opção Inválida")
