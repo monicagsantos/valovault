@@ -1,0 +1,43 @@
+{%extends "base.html" %}
+
+{% block title %} 
+
+ValoVault - Adicionar Coleção
+
+{% endblock %}
+
+
+{% block conteudo %}
+
+    <br><br>
+
+    <div class="container">
+        <div class="text-center">
+            <p class="h1">Adicionar Skin à Coleção</p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="container">
+
+        <form>
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <option selected>Selecione a skin</option>
+                {% for b in bundles %}
+                <option value="{{ b[0] }}">{{ b[1] }}</option>
+                {% endfor %}
+            </select>
+              
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example" disabled>
+                <option selected>Selecione a arma</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </form>
+
+    </div>
+
+
+{% endblock %}

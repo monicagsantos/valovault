@@ -1,0 +1,46 @@
+{%extends "base.html" %}
+
+{% block title %} 
+
+ValoVault - Wishlist
+
+{% endblock %}
+
+
+{% block conteudo %}
+
+    <br><br>
+
+    <div class="container">
+        <div class="text-center">
+            <p class="h1">Wishlist</p>
+        </div>
+    </div>
+
+    <br><br>
+
+    {% if wishlist|length == 0 %}
+        <div container>
+            <h1 class="display-5 text-center">A wishlist está vazia. Adicione skins à sua wishlist</h1>
+        </div>
+
+    {% else %}
+
+        <div class="container">
+            {% for a in wishlist %}
+                <p class="h3">{{ a }}</p>
+                {% for t in wishlist[a] %}
+                    <p class="h5">Skin: {{ t[1] }}</p>
+                    <p>ID: {{ t[0] }}</p>
+                {% endfor %}
+                <hr>
+                <br><br>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+{% endblock %}

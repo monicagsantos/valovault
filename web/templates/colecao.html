@@ -1,0 +1,52 @@
+{%extends "base.html" %}
+
+{% block title %} 
+
+ValoVault - Coleção
+
+{% endblock %}
+
+
+{% block conteudo %}
+
+    <br><br>
+
+    <div class="container">
+        <div class="text-center">
+            <p class="h1">Coleção</p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="container text-center">
+        <a type="button" class="btn btn-dark btn-lg" href="{{ url_for('add_col') }}">Adicionar Skin</a> 
+    </div>
+    
+    <br><br>
+
+    {% if colecao|length == 0 %}
+        <div container>
+            <h1 class="display-5 text-center">A coleção está vazia. Adicione skins à sua coleção</h1>
+        </div>
+
+    {% else %}
+
+        <div class="container">
+            {% for a in colecao %}
+                <p class="h3">{{ a }}</p>
+                {% for t in colecao[a] %}
+                    <p class="h5">Skin: {{ t[1] }}</p>
+                    <p>ID: {{ t[0] }}</p>
+                {% endfor %}
+                <hr>
+                <br><br>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+{% endblock %}
