@@ -51,7 +51,24 @@ def get_all_col():
     
     result = cursor.fetchall()
 
-    return result
+    skins = []
+
+    col = {}
+
+    for r in result:
+        id  = r[0]
+        a   = r[1].decode()
+        s   = r[2].decode()
+
+        if not(a in col):
+            skins = []
+            skins.append((id, s))
+            col[a] = skins
+        else:
+            skins.append((id, s))
+            col[a] = skins
+
+    return col
 
 
 def get_all_wish():
@@ -60,7 +77,24 @@ def get_all_wish():
     
     result = cursor.fetchall()
 
-    return result
+    skins = []
+
+    wish = {}
+
+    for r in result:
+        id  = r[0]
+        a   = r[1].decode()
+        s   = r[2].decode()
+
+        if not(a in wish):
+            skins = []
+            skins.append((id, s))
+            wish[a] = skins
+        else:
+            skins.append((id, s))
+            wish[a] = skins
+
+    return wish
 
 
 def get_bundle():
@@ -70,7 +104,26 @@ def get_bundle():
     
     result = cursor.fetchall()
 
-    return result
+    armas = []
+
+    bund = {}
+
+    for r in result:
+
+        skinID  = r[0]
+        s       = r[1].decode()
+        armaID  = r[2]
+        a       = r[3].decode()
+
+        if not((skinID, s) in bund):
+            armas = []
+            armas.append((armaID, a))
+            bund[(skinID, s)] = armas
+        else:
+            armas.append((armaID, a))
+            bund[(skinID, s)] = armas
+
+    return bund
 
 
 def get_arma_bundle(skin):

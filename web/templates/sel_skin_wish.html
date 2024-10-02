@@ -1,0 +1,36 @@
+{%extends "base.html" %}
+
+{% block title %} 
+
+ValoVault - Adicionar Wishlish
+
+{% endblock %}
+
+
+{% block conteudo %}
+
+    <br><br>
+
+    <div class="container">
+        <div class="text-center">
+            <p class="h1">Adicionar Skin à Wishlist</p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="container">
+
+        <form method="post" action="{{ url_for('sel_skin_wish') }}">
+            <select id="skin" name="skin" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <option selected>Selecione a skin</option>
+                {% for b in bundles %}
+                    <option value="{{ b[0] }}">{{ b[1] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-dark">Selecionar skin</button>
+        </form>
+    </div>
+
+
+{% endblock %}

@@ -35,10 +35,12 @@ ValoVault - Coleção
         <div class="container">
             {% for a in colecao %}
                 <p class="h3">{{ a }}</p>
-                {% for t in colecao[a] %}
-                    <p class="h5">Skin: {{ t[1] }}</p>
-                    <p>ID: {{ t[0] }}</p>
-                {% endfor %}
+                <ul>
+                    {% for t in colecao[a] %}
+                        <li class="h5">{{ t[1] }} <a href="{{ url_for('rem_col', id=t[0]) }}" type="button" class="btn btn-danger btn-sm">Remover Skin</a></li>
+                        <!--<p>ID: {{ t[0] }}</p>-->
+                    {% endfor %}
+                </ul>
                 <hr>
                 <br><br>
 

@@ -1,0 +1,29 @@
+{%extends "base.html" %}
+
+{% block title %} 
+
+ValoVault - Adicionar Wishlist
+
+{% endblock %}
+
+
+{% block conteudo %}
+
+    <br><br>
+
+    <div class="container">
+        <div class="text-center">
+            <p class="h1">Adicionar Skin à Wishlist</p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="container">
+
+        <p class="h3"> Essa skin já existe na Wishlist </p>
+        <a type="button" class="btn btn-dark btn-lg" href="{{ url_for('wishlist') }}">Voltar à Wishlist</a>
+    </div>
+
+
+{% endblock %}
