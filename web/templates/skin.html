@@ -1,0 +1,30 @@
+{%extends "base.html" %}
+
+{% block title %} 
+
+{{ info[0] }} - ValoVault
+
+{% endblock %}
+
+
+{% block conteudo %}
+
+    <br><br>
+
+    <div class="container">
+        <div class="text-center">
+            <img src="/static/Bundles/{{ info[0] }}.png" class="img-fluid">
+            <br><br>
+            <p class="h1">{{ info[0] }}</p>
+        </div>
+    </div>
+    
+    <br><br>
+
+    <div class="container">
+        <p class="h5"><b>Preço:</b> <img src="/static/Valorant_Points.png" style="background-color:black;" width="20" height="20"> {{ info[1] }}</p>
+        <p class="h5"><b>Nível:</b> <img src="/static/{{ info [2] }}.webp" width="20" height="20"> {{ info[2] }}</p>
+    </div>
+
+
+{% endblock %}

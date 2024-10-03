@@ -2,7 +2,7 @@
 
 {% block title %} 
 
-ValoVault - Wishlist
+Wishlist - ValoVault
 
 {% endblock %}
 
@@ -35,11 +35,16 @@ ValoVault - Wishlist
         <div class="container">
             {% for a in wishlist %}
                 <p class="h3">{{ a }}</p>
-                <ul>
+                <div class="row">
                     {% for t in wishlist[a] %}
-                        <li class="h5">{{ t[1] }} <a href="{{ url_for('rem_wish', id=t[0]) }}" type="button" class="btn btn-danger btn-sm">Remover Skin</a></li>
+                        <div class="col">
+                            <a href="{{ url_for('pag_skin', nome=t[1]) }}">
+                                <img src="static/{{ a }}/{{ t[1] }}.png" class="img-thumbnail">
+                            </a>
+                            <p class="h5">{{ t[1] }} <a href="{{ url_for('rem_wish', id=t[0]) }}" type="button" class="btn btn-danger btn-sm">Remover Skin</a></p>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
                 <hr>
                 <br><br>
 

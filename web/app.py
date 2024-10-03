@@ -127,3 +127,12 @@ def rem_wish(id):
     return redirect(url_for("wishlist"))
 
 
+@app.route('/skin/<nome>')
+def pag_skin(nome: str):
+
+    info = db.get_info_skin(nome)
+    
+
+    return render_template("skin.html", info=info)
+
+
