@@ -21,23 +21,11 @@ ValoVault - Adicionar Coleção
 
     <div class="container">
 
-        <form method="post" action="{{ url_for('sel_skin_col') }}">
-            <select id="skin" name="skin" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                <option selected>Selecione a skin</option>
-                {% for b in bundles %}
-                    <option value="{{ b[0] }}">{{ b[1] }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" class="btn btn-success">Selecionar skin</button>
-        </form>
-        <br>
-        <form>
-            <select class="form-select form-select-sm" aria-label=".form-select-sm example" disabled>
-                <option selected>Selecione a arma</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
+        <form method="post" action="#">
+            {% for b in bundles %}
+                <input type="checkbox" name="{{ b[0] }}" id="{{ b[0] }}" value="{{ b[0] }}" style="background-image:url('/static/Bundles/{{ b[1] }}.png');"/><label for="{{ b[0] }}">{{ b[1] }}</label>
+            {% endfor %}
+             
         </form>
 
     </div>
