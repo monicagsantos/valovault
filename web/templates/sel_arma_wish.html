@@ -14,6 +14,8 @@ ValoVault - Adicionar Wishlist
     <div class="container">
         <div class="text-center">
             <p class="h1">Adicionar Skin à Wishlist</p>
+            <br>
+            <p class="h3">Selecione a arma</p>
         </div>
     </div>
 
@@ -22,17 +24,24 @@ ValoVault - Adicionar Wishlist
     <div class="container">
 
         <form method="post" action="{{ url_for('sel_arma_wish', skinID = skinID)}}">
-            <select id="arma" name="arma" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-                <option selected value="">Selecione a arma</option>
+            <div class="row">
                 {% for s in bundles %}
                     {% if s[0] == skinID %}
                         {% for a in bundles[s] %}
-                            <option value="{{ a[0] }}">{{ a[1] }}</option>
+                            <div class="col">
+                                <input type="radio" name="arma" class="visually-hidden" id="{{ a[0] }}" value="{{ a[0] }}">
+                                <label for="{{ a[0] }}">
+                                    <img src="/static/{{ a[1] }}/{{ s[1] }}.png" alt="{{ a[1] }}" width="350">
+                                </label>
+                                <br><br>
+                            </div>
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
-            </select>
-            <button type="submit" class="btn btn-dark">Selecionar</button>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-dark btn-lg">Selecionar</button>
+            </div>
         </form>
     </div>
 

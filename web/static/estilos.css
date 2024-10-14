@@ -1,6 +1,14 @@
-.vp {
-    background: url('Valorant_Points.png');
-    height: 20px;
-    width: 20px;
-    display: block;
+label {
+    cursor: pointer;
+}
+  
+label:hover {
+    transform: scale(1.2);
+}
+
+input[type="radio"]:checked + label {
+    border-style: solid;
+    border-radius: 5px;
+    border-width: thick;
+    border-color: #136def;
 }
